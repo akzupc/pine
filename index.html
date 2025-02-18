@@ -163,6 +163,10 @@ document.getElementById('pineapple').addEventListener('touchend', function (even
     }
     lastTap = currentTime;
 });
+        document.getElementById('pineapple').addEventListener('touchstart', function (event) {
+    event.preventDefault(); // Prevents zooming
+    clickPineapple(); // Ensures instant response
+});
     </script>
 </body>
 </html>
