@@ -26,6 +26,9 @@
             border-radius: 8px;
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .button:hover {
             transform: scale(1.05);
@@ -38,6 +41,14 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            gap: 15px;
+            max-width: 900px;
+            margin: auto;
+        }
+        .upgrade-count {
+            font-size: 14px;
+            color: #fff;
+            font-weight: normal;
         }
     </style>
 </head>
@@ -53,16 +64,16 @@
         let score = 0;
         let perClick = 1;
         let upgrades = [
-            { name: "Better Soil", cost: 10, boost: 1 },
-            { name: "Watering System", cost: 50, boost: 2 },
-            { name: "Fertilizer", cost: 100, boost: 5 },
-            { name: "Greenhouse", cost: 500, boost: 10 },
-            { name: "Automated Farm", cost: 1000, boost: 20 },
-            { name: "Pineapple Factory", cost: 5000, boost: 50 },
-            { name: "Pineapple Empire", cost: 10000, boost: 100 },
-            { name: "Super Pineapple Tech", cost: 50000, boost: 200 },
-            { name: "Alien Pineapple Farming", cost: 100000, boost: 500 },
-            { name: "God of Pineapples", cost: 500000, boost: 1000 }
+            { name: "Better Soil", cost: 10, boost: 1, count: 0 },
+            { name: "Watering System", cost: 50, boost: 2, count: 0 },
+            { name: "Fertilizer", cost: 100, boost: 5, count: 0 },
+            { name: "Greenhouse", cost: 500, boost: 10, count: 0 },
+            { name: "Automated Farm", cost: 1000, boost: 20, count: 0 },
+            { name: "Pineapple Factory", cost: 5000, boost: 50, count: 0 },
+            { name: "Pineapple Empire", cost: 10000, boost: 100, count: 0 },
+            { name: "Super Pineapple Tech", cost: 50000, boost: 200, count: 0 },
+            { name: "Alien Pineapple Farming", cost: 100000, boost: 500, count: 0 },
+            { name: "God of Pineapples", cost: 500000, boost: 1000, count: 0 }
         ];
         
         function clickPineapple() {
@@ -75,6 +86,7 @@
             if (score >= upgrade.cost) {
                 score -= upgrade.cost;
                 perClick += upgrade.boost;
+                upgrade.count++;
                 upgrade.cost = Math.floor(upgrade.cost * 1.5);
                 document.getElementById('score').innerText = score;
                 updateUpgrades();
@@ -87,7 +99,7 @@
             upgrades.forEach((upgrade, index) => {
                 let button = document.createElement('button');
                 button.className = "button";
-                button.innerText = `${upgrade.name} (Cost: ${upgrade.cost}, Boost: +${upgrade.boost})`;
+                button.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost}, Boost: +${upgrade.boost})<br><span class='upgrade-count'>Owned: ${upgrade.count}</span>`;
                 button.onclick = () => buyUpgrade(index);
                 upgradeDiv.appendChild(button);
             });
