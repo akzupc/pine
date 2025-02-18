@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pineapple Clicker</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #ffeb99;
+        }
+        #pineapple {
+            width: 150px;
+            cursor: pointer;
+        }
+        .button {
+            padding: 10px;
+            margin: 10px;
+            background: orange;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pineapple Clicker 🍍</h1>
+    <h2>Pineapples: <span id="score">0</span></h2>
+    <img id="pineapple" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple.png" onclick="clickPineapple()">
+    <br>
+    <button class="button" onclick="buyUpgrade()">Buy Upgrade (Cost: <span id="upgradeCost">10</span>)</button>
+    <script>
+        let score = 0;
+        let perClick = 1;
+        let upgradeCost = 10;
+        
+        function clickPineapple() {
+            score += perClick;
+            document.getElementById('score').innerText = score;
+        }
+        
+        function buyUpgrade() {
+            if (score >= upgradeCost) {
+                score -= upgradeCost;
+                perClick++;
+                upgradeCost = Math.floor(upgradeCost * 1.5);
+                document.getElementById('score').innerText = score;
+                document.getElementById('upgradeCost').innerText = upgradeCost;
+            }
+        }
+    </script>
+</body>
+</html>
