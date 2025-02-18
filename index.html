@@ -124,6 +124,11 @@
             document.getElementById('score').innerText = formatNumber(score);
         }
         
+        function add_pineapples(amount) {
+            score += amount;
+            document.getElementById('score').innerText = formatNumber(score);
+        }
+        
         setInterval(autoGenerate, 1000);
         updateUpgrades();
     </script>
