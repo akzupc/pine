@@ -117,24 +117,25 @@
             { name: "Pineapple Multiverse Portals", cost: 500000000, baseCost: 500000000, auto: 25000, count: 0 }
         ];
         
-        function prestige() {
-            if (score >= prestigeRequirement) {
-                score = 0;
-                autoClickers = 0;
-                prestigeLevel++;
-                prestigeBonus = prestigeLevel * 5;
-                prestigeRequirement *= 2;
-                
-                upgrades.forEach(upgrade => {
-                    upgrade.cost = upgrade.baseCost;
-                    upgrade.count = 0;
-                });
-                
-                updateUI();
-                updateUpgrades();
-            } else {
-                alert(`You need at least ${prestigeRequirement} pineapples to prestige!`);
-            }
+        function updateUpgrades() {
+            let upgradeDiv = document.getElementById("upgrades");
+            upgradeDiv.innerHTML = "";
+            upgrades.forEach((upgrade, index) => {
+                let btn = document.createElement("button");
+                btn.className = "button";
+                btn.innerHTML = `${upgrade.name} - Cost: ${upgrade.cost} - Owned: ${upgrade.count}`;
+                btn.onclick = function() {
+                    if (score >= upgrade.cost) {
+                        score -= upgrade.cost;
+                        upgrade.count++;
+                        upgrade.cost = Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.count));
+                        autoClickers += upgrade.auto;
+                        updateUI();
+                        updateUpgrades();
+                    }
+                };
+                upgradeDiv.appendChild(btn);
+            });
         }
     
         setInterval(autoGenerate, 1000);
