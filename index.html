@@ -15,15 +15,15 @@
             cursor: pointer;
         }
         .button {
-            padding: 12px 20px;
-            margin: 10px;
+            padding: 8px 16px;
+            margin: 5px;
             background: linear-gradient(135deg, #ffcc00, #ff6600);
             border: none;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             color: white;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 6px;
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
@@ -41,12 +41,12 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             max-width: 900px;
             margin: auto;
         }
         .upgrade-count {
-            font-size: 14px;
+            font-size: 12px;
             color: #fff;
             font-weight: normal;
         }
@@ -63,27 +63,26 @@
     <script>
         let score = 0;
         let perClick = 1;
+        let autoClickers = 0;
         let upgrades = [
-            { name: "Better Soil", cost: 10, boost: 1, count: 0 },
-            { name: "Watering System", cost: 50, boost: 2, count: 0 },
-            { name: "Fertilizer", cost: 100, boost: 5, count: 0 },
-            { name: "Greenhouse", cost: 500, boost: 10, count: 0 },
-            { name: "Automated Farm", cost: 1000, boost: 20, count: 0 },
-            { name: "Pineapple Factory", cost: 5000, boost: 50, count: 0 },
-            { name: "Pineapple Empire", cost: 10000, boost: 100, count: 0 },
-            { name: "Super Pineapple Tech", cost: 50000, boost: 200, count: 0 },
-            { name: "Alien Pineapple Farming", cost: 100000, boost: 500, count: 0 },
-            { name: "God of Pineapples", cost: 500000, boost: 1000, count: 0 },
-            { name: "Pineapple Harvesters", cost: 1000000, boost: 2000, count: 0 },
-            { name: "Golden Pineapples", cost: 5000000, boost: 5000, count: 0 },
-            { name: "Pineapple AI", cost: 10000000, boost: 10000, count: 0 },
-            { name: "Intergalactic Pineapples", cost: 50000000, boost: 50000, count: 0 },
-            { name: "Time Warp Pineapples", cost: 100000000, boost: 100000, count: 0 },
-            { name: "Quantum Pineapple Growth", cost: 500000000, boost: 500000, count: 0 },
-            { name: "Infinite Pineapple Loop", cost: 1000000000, boost: 1000000, count: 0 },
-            { name: "Multiverse Pineapple Trade", cost: 5000000000, boost: 5000000, count: 0 },
-            { name: "Pineapple Black Hole", cost: 10000000000, boost: 10000000, count: 0 },
-            { name: "God-Tier Pineapple", cost: 50000000000, boost: 50000000, count: 0 }
+            { name: "Better Soil", cost: 10, boost: 1, auto: 0, count: 0 },
+            { name: "Watering System", cost: 50, boost: 2, auto: 1, count: 0 },
+            { name: "Fertilizer", cost: 100, boost: 5, auto: 2, count: 0 },
+            { name: "Greenhouse", cost: 500, boost: 10, auto: 5, count: 0 },
+            { name: "Automated Farm", cost: 1000, boost: 20, auto: 10, count: 0 },
+            { name: "Pineapple Factory", cost: 5000, boost: 50, auto: 25, count: 0 },
+            { name: "Pineapple Empire", cost: 10000, boost: 100, auto: 50, count: 0 },
+            { name: "Super Pineapple Tech", cost: 50000, boost: 200, auto: 100, count: 0 },
+            { name: "Golden Pineapple", cost: 100000, boost: 500, auto: 250, count: 0 },
+            { name: "Diamond Plantation", cost: 500000, boost: 1000, auto: 500, count: 0 },
+            { name: "Robot Farmers", cost: 1000000, boost: 5000, auto: 1000, count: 0 },
+            { name: "Pineapple AI", cost: 5000000, boost: 10000, auto: 2500, count: 0 },
+            { name: "Infinite Growth Serum", cost: 10000000, boost: 50000, auto: 5000, count: 0 },
+            { name: "Quantum Pineapple Generator", cost: 50000000, boost: 100000, auto: 10000, count: 0 },
+            { name: "Time Bending Farm", cost: 100000000, boost: 500000, auto: 50000, count: 0 },
+            { name: "God-Tier Pineapples", cost: 500000000, boost: 1000000, auto: 100000, count: 0 },
+            { name: "Multiverse Pineapple Expansion", cost: 1000000000, boost: 5000000, auto: 500000, count: 0 },
+            { name: "Cosmic Pineapple", cost: 5000000000, boost: 10000000, auto: 1000000, count: 0 }
         ];
         
         function clickPineapple() {
@@ -96,6 +95,7 @@
             if (score >= upgrade.cost) {
                 score -= upgrade.cost;
                 perClick += upgrade.boost;
+                autoClickers += upgrade.auto;
                 upgrade.count++;
                 upgrade.cost = Math.floor(upgrade.cost * 1.5);
                 document.getElementById('score').innerText = formatNumber(score);
@@ -109,21 +109,22 @@
             upgrades.forEach((upgrade, index) => {
                 let button = document.createElement('button');
                 button.className = "button";
-                button.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost}, Boost: +${upgrade.boost})<br><span class='upgrade-count'>Owned: ${upgrade.count}</span>`;
+                button.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost}, Boost: +${upgrade.boost}, Auto: +${upgrade.auto}/s)<br><span class='upgrade-count'>Owned: ${upgrade.count}</span>`;
                 button.onclick = () => buyUpgrade(index);
                 upgradeDiv.appendChild(button);
             });
-        }
-        
-        window.add_pineapples = function(amount) {
-            score += amount;
-            document.getElementById('score').innerText = formatNumber(score);
         }
         
         function formatNumber(num) {
             return num.toLocaleString('fullwide', { useGrouping: false });
         }
         
+        function autoGenerate() {
+            score += autoClickers;
+            document.getElementById('score').innerText = formatNumber(score);
+        }
+        
+        setInterval(autoGenerate, 1000);
         updateUpgrades();
     </script>
 </body>
