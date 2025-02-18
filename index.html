@@ -29,9 +29,6 @@
             margin: 5px;
             font-size: 16px;
         }
-        .golden {
-            color: gold;
-        }
     </style>
 </head>
 <body>
@@ -47,30 +44,29 @@
     <div id="notification" style="display:none; color: yellow; font-size: 20px; margin-top: 10px;">Congrats on 1M!</div>
     
     <script>
-        let score = parseInt(localStorage.getItem("score")) || 0;
-        let perClick = parseInt(localStorage.getItem("perClick")) || 1;
-        let autoClickers = parseInt(localStorage.getItem("autoClickers")) || 0;
-        let prestigeBonus = parseInt(localStorage.getItem("prestigeBonus")) || 1;
+        let score = 0;
+        let perClick = 1;
+        let autoClickers = 0;
+        let prestigeBonus = 1;
         
         let upgrades = [
-            { name: "Watering System", cost: 50, boost: 2, auto: 1 },
-            { name: "Greenhouse", cost: 500, boost: 5, auto: 5 },
-            { name: "Robotic Harvesters", cost: 100000, boost: 50, auto: 100 },
-            { name: "Advanced Fertilizer", cost: 200, boost: 3, auto: 2 },
-            { name: "Automated Irrigation", cost: 1000, boost: 6, auto: 7 },
-            { name: "Solar Grow Lights", cost: 2000, boost: 10, auto: 15 },
-            { name: "AI Farming Drones", cost: 10000, boost: 20, auto: 30 },
-            { name: "Nano Growth Tech", cost: 50000, boost: 50, auto: 80 },
-            { name: "Quantum Soil", cost: 250000, boost: 100, auto: 150 },
-            { name: "Bioengineered Pineapples", cost: 500000, boost: 250, auto: 300 },
-            { name: "Hydroponic Farms", cost: 750000, boost: 500, auto: 500 },
-            { name: "Interstellar Pineapple Colonies", cost: 2000000, boost: 1000, auto: 1000 },
-            { name: "Time-Warped Pineapple Fields", cost: 5000000, boost: 5000, auto: 5000 }
+            { name: "Watering System", cost: 50, boost: 2, auto: 1, count: 0 },
+            { name: "Greenhouse", cost: 500, boost: 5, auto: 5, count: 0 },
+            { name: "Robotic Harvesters", cost: 100000, boost: 50, auto: 100, count: 0 },
+            { name: "Advanced Fertilizer", cost: 200, boost: 3, auto: 2, count: 0 },
+            { name: "Automated Irrigation", cost: 1000, boost: 6, auto: 7, count: 0 },
+            { name: "Solar Grow Lights", cost: 2000, boost: 10, auto: 15, count: 0 },
+            { name: "AI Farming Drones", cost: 10000, boost: 20, auto: 30, count: 0 },
+            { name: "Nano Growth Tech", cost: 50000, boost: 50, auto: 80, count: 0 },
+            { name: "Quantum Soil", cost: 250000, boost: 100, auto: 150, count: 0 },
+            { name: "Bioengineered Pineapples", cost: 500000, boost: 250, auto: 300, count: 0 },
+            { name: "Hydroponic Farms", cost: 750000, boost: 500, auto: 500, count: 0 },
+            { name: "Interstellar Pineapple Colonies", cost: 2000000, boost: 1000, auto: 1000, count: 0 },
+            { name: "Time-Warped Pineapple Fields", cost: 5000000, boost: 5000, auto: 5000, count: 0 }
         ];
         
         function clickPineapple() {
-            let bonus = Math.random() < 0.05 ? 5 : 1; // 5% chance for a golden click
-            score += perClick * prestigeBonus * bonus;
+            score += perClick * prestigeBonus;
             updateUI();
         }
         
@@ -80,6 +76,7 @@
                 score -= upgrade.cost;
                 perClick += upgrade.boost;
                 autoClickers += upgrade.auto;
+                upgrade.count++;
                 upgrade.cost = Math.floor(upgrade.cost * 1.3);
                 updateUpgrades();
             }
@@ -91,18 +88,19 @@
             upgrades.forEach((upgrade, index) => {
                 let btn = document.createElement('button');
                 btn.className = "button";
-                btn.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost})`;
+                btn.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost}, Owned: ${upgrade.count})`;
                 btn.onclick = () => buyUpgrade(index);
                 upgradeDiv.appendChild(btn);
             });
         }
         
         function prestige() {
-            if (score >= 1000000) { // Prestige unlocks at 1,000,000 pineapples
+            if (score >= 1000000) {
                 prestigeBonus++;
                 score = 0;
                 perClick = 1;
                 autoClickers = 0;
+                updates = upgrades.map(upgrade => ({ ...upgrade, count: 0 }));
                 updateUI();
             }
         }
@@ -115,10 +113,6 @@
         function updateUI() {
             document.getElementById('score').innerText = score;
             document.getElementById('prestige').innerText = prestigeBonus;
-            localStorage.setItem("score", score);
-            localStorage.setItem("perClick", perClick);
-            localStorage.setItem("autoClickers", autoClickers);
-            localStorage.setItem("prestigeBonus", prestigeBonus);
             
             if (score >= 1000000) {
                 document.getElementById('notification').style.display = 'block';
