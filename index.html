@@ -88,7 +88,7 @@
         
         function clickPineapple() {
             score += perClick;
-            document.getElementById('score').innerText = score;
+            document.getElementById('score').innerText = formatNumber(score);
         }
         
         function buyUpgrade(index) {
@@ -98,7 +98,7 @@
                 perClick += upgrade.boost;
                 upgrade.count++;
                 upgrade.cost = Math.floor(upgrade.cost * 1.5);
-                document.getElementById('score').innerText = score;
+                document.getElementById('score').innerText = formatNumber(score);
                 updateUpgrades();
             }
         }
@@ -117,7 +117,11 @@
         
         window.add_pineapples = function(amount) {
             score += amount;
-            document.getElementById('score').innerText = score;
+            document.getElementById('score').innerText = formatNumber(score);
+        }
+        
+        function formatNumber(num) {
+            return num.toLocaleString('fullwide', { useGrouping: false });
         }
         
         updateUpgrades();
