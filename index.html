@@ -154,6 +154,15 @@
         setInterval(autoGenerate, 1000);
         updateUI();
         updateUpgrades();
+        let lastTap = 0;
+document.getElementById('pineapple').addEventListener('touchend', function (event) {
+    let currentTime = new Date().getTime();
+    let tapLength = currentTime - lastTap;
+    if (tapLength < 300 && tapLength > 0) {
+        event.preventDefault();
+    }
+    lastTap = currentTime;
+});
     </script>
 </body>
 </html>
