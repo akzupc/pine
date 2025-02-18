@@ -105,17 +105,24 @@
             { name: "Nano Growth Tech", cost: 50000, baseCost: 50000, auto: 80, count: 0 },
             { name: "Robotic Harvesters", cost: 100000, baseCost: 100000, auto: 100, count: 0 },
             { name: "Quantum Soil", cost: 250000, baseCost: 250000, auto: 150, count: 0 },
-            { name: "Bioengineered Pineapples", cost: 500000, baseCost: 500000, auto: 300, count: 0 },
-            { name: "Super Growth Serum", cost: 750000, baseCost: 750000, auto: 500, count: 0 },
-            { name: "Turbo Sun Lamps", cost: 1000000, baseCost: 1000000, auto: 700, count: 0 },
-            { name: "Genetic Enhancements", cost: 2500000, baseCost: 2500000, auto: 1000, count: 0 },
-            { name: "Weather Control Tech", cost: 5000000, baseCost: 5000000, auto: 1500, count: 0 },
-            { name: "Automated Factories", cost: 10000000, baseCost: 10000000, auto: 2500, count: 0 },
-            { name: "AI Plantation Management", cost: 25000000, baseCost: 25000000, auto: 4000, count: 0 },
-            { name: "Time-Distortion Fields", cost: 50000000, baseCost: 50000000, auto: 6000, count: 0 },
-            { name: "Nanobot Harvesters", cost: 100000000, baseCost: 100000000, auto: 10000, count: 0 },
-            { name: "Pineapple Multiverse Portals", cost: 500000000, baseCost: 500000000, auto: 25000, count: 0 }
+            { name: "Bioengineered Pineapples", cost: 500000, baseCost: 500000, auto: 300, count: 0 }
         ];
+        
+        function clickPineapple() {
+            score += perClick * prestigeBonus;
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById("score").innerText = score;
+            document.getElementById("autoPerSec").innerText = autoClickers * prestigeBonus;
+            document.getElementById("prestige").innerText = prestigeBonus;
+        }
+
+        function autoGenerate() {
+            score += autoClickers * prestigeBonus;
+            updateUI();
+        }
         
         function updateUpgrades() {
             let upgradeDiv = document.getElementById("upgrades");
@@ -136,6 +143,21 @@
                 };
                 upgradeDiv.appendChild(btn);
             });
+        }
+    
+        function prestige() {
+            if (score >= prestigeRequirement) {
+                score = 0;
+                autoClickers = 0;
+                prestigeLevel++;
+                prestigeBonus = prestigeLevel * 5;
+                upgrades.forEach(upgrade => {
+                    upgrade.cost = upgrade.baseCost;
+                    upgrade.count = 0;
+                });
+                updateUpgrades();
+                updateUI();
+            }
         }
     
         setInterval(autoGenerate, 1000);
