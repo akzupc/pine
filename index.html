@@ -15,12 +15,29 @@
             cursor: pointer;
         }
         .button {
-            padding: 10px;
+            padding: 12px 20px;
             margin: 10px;
-            background: orange;
+            background: linear-gradient(135deg, #ffcc00, #ff6600);
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        .button:active {
+            transform: scale(0.95);
+        }
+        #upgrades {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
     </style>
 </head>
@@ -29,26 +46,54 @@
     <h2>Pineapples: <span id="score">0</span></h2>
     <img id="pineapple" src="vecteezy_pineapple-fruit-cartoon-illustration-isolated-on-transparent_47130664.png" onclick="clickPineapple()">
     <br>
-    <button class="button" onclick="buyUpgrade()">Buy Upgrade (Cost: <span id="upgradeCost">10</span>)</button>
+    <h3>Upgrades</h3>
+    <div id="upgrades"></div>
+    
     <script>
         let score = 0;
         let perClick = 1;
-        let upgradeCost = 10;
+        let upgrades = [
+            { name: "Better Soil", cost: 10, boost: 1 },
+            { name: "Watering System", cost: 50, boost: 2 },
+            { name: "Fertilizer", cost: 100, boost: 5 },
+            { name: "Greenhouse", cost: 500, boost: 10 },
+            { name: "Automated Farm", cost: 1000, boost: 20 },
+            { name: "Pineapple Factory", cost: 5000, boost: 50 },
+            { name: "Pineapple Empire", cost: 10000, boost: 100 },
+            { name: "Super Pineapple Tech", cost: 50000, boost: 200 },
+            { name: "Alien Pineapple Farming", cost: 100000, boost: 500 },
+            { name: "God of Pineapples", cost: 500000, boost: 1000 }
+        ];
         
         function clickPineapple() {
             score += perClick;
             document.getElementById('score').innerText = score;
         }
         
-        function buyUpgrade() {
-            if (score >= upgradeCost) {
-                score -= upgradeCost;
-                perClick++;
-                upgradeCost = Math.floor(upgradeCost * 1.5);
+        function buyUpgrade(index) {
+            let upgrade = upgrades[index];
+            if (score >= upgrade.cost) {
+                score -= upgrade.cost;
+                perClick += upgrade.boost;
+                upgrade.cost = Math.floor(upgrade.cost * 1.5);
                 document.getElementById('score').innerText = score;
-                document.getElementById('upgradeCost').innerText = upgradeCost;
+                updateUpgrades();
             }
         }
+        
+        function updateUpgrades() {
+            let upgradeDiv = document.getElementById('upgrades');
+            upgradeDiv.innerHTML = "";
+            upgrades.forEach((upgrade, index) => {
+                let button = document.createElement('button');
+                button.className = "button";
+                button.innerText = `${upgrade.name} (Cost: ${upgrade.cost}, Boost: +${upgrade.boost})`;
+                button.onclick = () => buyUpgrade(index);
+                upgradeDiv.appendChild(button);
+            });
+        }
+        
+        updateUpgrades();
     </script>
 </body>
 </html>
