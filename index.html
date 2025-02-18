@@ -13,11 +13,21 @@
             text-align: center;
             padding: 10px;
         }
-        h1, h2, h3 {
-            margin: 10px 0;
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: yellow;
+        }
+        h3 {
+            font-size: 18px;
+            margin-top: 5px;
         }
         #pineapple {
-            width: 200px;
+            width: 180px;
             cursor: pointer;
             transition: transform 0.1s;
         }
@@ -30,18 +40,21 @@
             border: none;
             color: white;
             cursor: pointer;
-            margin: 5px;
             font-size: 16px;
             border-radius: 5px;
             display: block;
-            width: 80%;
-            margin: 5px auto;
+            width: 90%;
+            max-width: 300px;
+            margin: 8px auto;
+            text-align: left;
         }
         .button:hover {
             background: #5a6fb3;
         }
-        #upgrades button {
-            text-align: left;
+        #upgrades {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         #notification {
             display: none;
@@ -50,11 +63,26 @@
             margin-top: 10px;
             font-weight: bold;
         }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            h3 {
+                font-size: 16px;
+            }
+            #pineapple {
+                width: 150px;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Pineapple Clicker 🍍</h1>
     <h2>Pineapples: <span id="score">0</span></h2>
+    <h3>Auto per second: <span id="autoRate">0</span></h3>
     <h3>Prestige Bonus: x<span id="prestige">1</span></h3>
     <img id="pineapple" src="vecteezy_pineapple-fruit-cartoon-illustration-isolated-on-transparent_47130664.png" onclick="clickPineapple()">
     <div>
@@ -131,6 +159,7 @@
         
         function updateUI() {
             document.getElementById('score').innerText = score;
+            document.getElementById('autoRate').innerText = autoClickers;
             document.getElementById('prestige').innerText = prestigeBonus;
             
             if (score >= 1000000) {
