@@ -12,25 +12,36 @@
             color: white;
             text-align: center;
             padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         h1, h2, h3 {
             margin: 10px 0;
         }
         #game-container {
             display: flex;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1200px;
+        }
+        #left-section {
+            width: 35%;
+            display: flex;
             flex-direction: column;
             align-items: center;
         }
-        #left-section, #right-section {
-            width: 100%;
-        }
         #pineapple {
-            width: 250px;
+            width: 300px;
             cursor: pointer;
             transition: transform 0.1s;
         }
         #pineapple:active {
             transform: scale(1.1);
+        }
+        #right-section {
+            width: 45%;
+            text-align: left;
         }
         .button {
             background: #7289da;
@@ -42,8 +53,7 @@
             font-size: 14px;
             border-radius: 5px;
             display: block;
-            width: 90%;
-            margin: 5px auto;
+            width: 100%;
         }
         .button:hover {
             background: #5a6fb3;
@@ -57,30 +67,6 @@
             font-size: 22px;
             margin-top: 10px;
             font-weight: bold;
-        }
-        
-        @media (min-width: 1024px) {
-            #game-container {
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 0 10%;
-            }
-            #left-section {
-                width: 35%;
-                text-align: left;
-            }
-            #right-section {
-                width: 55%;
-                text-align: left;
-            }
-            #pineapple {
-                width: 450px;
-            }
-            .button {
-                width: 100%;
-                padding: 8px;
-                font-size: 12px;
-            }
         }
     </style>
 </head>
