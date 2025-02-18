@@ -13,21 +13,19 @@
             text-align: center;
             padding: 10px;
         }
-        h1 {
-            font-size: 28px;
-            font-weight: bold;
+        h1, h2, h3 {
+            margin: 10px 0;
         }
-        h2 {
-            font-size: 24px;
-            font-weight: bold;
-            color: yellow;
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        h3 {
-            font-size: 18px;
-            margin-top: 5px;
+        #left-section, #right-section {
+            width: 100%;
         }
         #pineapple {
-            width: 180px;
+            width: 200px;
             cursor: pointer;
             transition: transform 0.1s;
         }
@@ -40,21 +38,18 @@
             border: none;
             color: white;
             cursor: pointer;
+            margin: 5px;
             font-size: 16px;
             border-radius: 5px;
             display: block;
-            width: 90%;
-            max-width: 300px;
-            margin: 8px auto;
-            text-align: left;
+            width: 80%;
+            margin: 5px auto;
         }
         .button:hover {
             background: #5a6fb3;
         }
-        #upgrades {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        #upgrades button {
+            text-align: left;
         }
         #notification {
             display: none;
@@ -63,32 +58,38 @@
             margin-top: 10px;
             font-weight: bold;
         }
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 24px;
+        
+        @media (min-width: 768px) {
+            #game-container {
+                flex-direction: row;
+                justify-content: space-around;
             }
-            h2 {
-                font-size: 20px;
+            #left-section {
+                width: 40%;
             }
-            h3 {
-                font-size: 16px;
+            #right-section {
+                width: 50%;
             }
             #pineapple {
-                width: 150px;
+                width: 400px;
             }
         }
     </style>
 </head>
 <body>
     <h1>Pineapple Clicker 🍍</h1>
-    <h2>Pineapples: <span id="score">0</span></h2>
-    <h3>Auto per second: <span id="autoRate">0</span></h3>
-    <h3>Prestige Bonus: x<span id="prestige">1</span></h3>
-    <img id="pineapple" src="vecteezy_pineapple-fruit-cartoon-illustration-isolated-on-transparent_47130664.png" onclick="clickPineapple()">
-    <div>
-        <h3>Upgrades</h3>
-        <div id="upgrades"></div>
-        <button class="button" onclick="prestige()">Prestige Reset (Gain Bonus)</button>
+    <div id="game-container">
+        <div id="left-section">
+            <h2 style="color: yellow;">Pineapples: <span id="score">0</span></h2>
+            <h3>Auto per second: <span id="autoPerSec">0</span></h3>
+            <h3>Prestige Bonus: x<span id="prestige">1</span></h3>
+            <img id="pineapple" src="vecteezy_pineapple-fruit-cartoon-illustration-isolated-on-transparent_47130664.png" onclick="clickPineapple()">
+        </div>
+        <div id="right-section">
+            <h3>Upgrades</h3>
+            <div id="upgrades"></div>
+            <button class="button" onclick="prestige()">Prestige Reset (Gain Bonus)</button>
+        </div>
     </div>
     <div id="notification">🎉 Congrats on 1M! 🎉</div>
     
@@ -159,9 +160,8 @@
         
         function updateUI() {
             document.getElementById('score').innerText = score;
-            document.getElementById('autoRate').innerText = autoClickers;
             document.getElementById('prestige').innerText = prestigeBonus;
-            
+            document.getElementById('autoPerSec').innerText = autoClickers;
             if (score >= 1000000) {
                 document.getElementById('notification').style.display = 'block';
             }
