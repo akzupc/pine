@@ -51,13 +51,13 @@
         
         let upgrades = [
             { name: "Watering System", cost: 50, boost: 2, auto: 1, count: 0 },
-            { name: "Greenhouse", cost: 500, boost: 5, auto: 5, count: 0 },
-            { name: "Robotic Harvesters", cost: 100000, boost: 50, auto: 100, count: 0 },
             { name: "Advanced Fertilizer", cost: 200, boost: 3, auto: 2, count: 0 },
+            { name: "Greenhouse", cost: 500, boost: 5, auto: 5, count: 0 },
             { name: "Automated Irrigation", cost: 1000, boost: 6, auto: 7, count: 0 },
             { name: "Solar Grow Lights", cost: 2000, boost: 10, auto: 15, count: 0 },
             { name: "AI Farming Drones", cost: 10000, boost: 20, auto: 30, count: 0 },
             { name: "Nano Growth Tech", cost: 50000, boost: 50, auto: 80, count: 0 },
+            { name: "Robotic Harvesters", cost: 100000, boost: 50, auto: 100, count: 0 },
             { name: "Quantum Soil", cost: 250000, boost: 100, auto: 150, count: 0 },
             { name: "Bioengineered Pineapples", cost: 500000, boost: 250, auto: 300, count: 0 },
             { name: "Hydroponic Farms", cost: 750000, boost: 500, auto: 500, count: 0 },
@@ -88,7 +88,7 @@
             upgrades.forEach((upgrade, index) => {
                 let btn = document.createElement('button');
                 btn.className = "button";
-                btn.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost}, Owned: ${upgrade.count})`;
+                btn.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost}, Owned: ${upgrade.count}, +${upgrade.auto} Auto/sec)`;
                 btn.onclick = () => buyUpgrade(index);
                 upgradeDiv.appendChild(btn);
             });
@@ -100,7 +100,7 @@
                 score = 0;
                 perClick = 1;
                 autoClickers = 0;
-                updates = upgrades.map(upgrade => ({ ...upgrade, count: 0 }));
+                upgrades = upgrades.map(upgrade => ({ ...upgrade, count: 0 }));
                 updateUI();
             }
         }
