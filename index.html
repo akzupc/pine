@@ -91,6 +91,7 @@
         let score = 0;
         let perClick = 1;
         let autoClickers = 0;
+        let prestigeLevel = 0;
         let prestigeBonus = 1;
         let prestigeRequirement = 1000000;
         
@@ -107,7 +108,10 @@
             { name: "Bioengineered Pineapples", cost: 500000, baseCost: 500000, auto: 300, count: 0 },
             { name: "Hydroponic Farms", cost: 750000, baseCost: 750000, auto: 500, count: 0 },
             { name: "Interstellar Pineapple Colonies", cost: 2000000, baseCost: 2000000, auto: 1000, count: 0 },
-            { name: "Time-Warped Pineapple Fields", cost: 5000000, baseCost: 5000000, auto: 5000, count: 0 }
+            { name: "Time-Warped Pineapple Fields", cost: 5000000, baseCost: 5000000, auto: 5000, count: 0 },
+            { name: "Alien Pineapple Cultivation", cost: 10000000, baseCost: 10000000, auto: 10000, count: 0 },
+            { name: "Multi-Dimensional Pineapples", cost: 25000000, baseCost: 25000000, auto: 25000, count: 0 },
+            { name: "Galactic Pineapple Empires", cost: 50000000, baseCost: 50000000, auto: 50000, count: 0 }
         ];
         
         function clickPineapple() {
@@ -119,7 +123,8 @@
             if (score >= prestigeRequirement) {
                 score = 0;
                 autoClickers = 0;
-                prestigeBonus *= 2;
+                prestigeLevel++;
+                prestigeBonus = prestigeLevel * 5;
                 prestigeRequirement *= 2;
                 
                 upgrades.forEach(upgrade => {
@@ -148,29 +153,9 @@
             }
         }
         
-        function updateUpgrades() {
-            let upgradeDiv = document.getElementById('upgrades');
-            upgradeDiv.innerHTML = "";
-            upgrades.forEach((upgrade, index) => {
-                let btn = document.createElement('button');
-                btn.className = "button";
-                btn.innerHTML = `<b>${upgrade.name}</b><br>Cost: ${upgrade.cost}<br>Owned: ${upgrade.count}<br>+${upgrade.auto} Auto/sec`;
-                btn.onclick = () => buyUpgrade(index);
-                upgradeDiv.appendChild(btn);
-            });
-        }
-        
-        function buyUpgrade(index) {
-            let upgrade = upgrades[index];
-            if (score >= upgrade.cost) {
-                score -= upgrade.cost;
-                autoClickers += upgrade.auto;
-                upgrade.count++;
-                upgrade.cost = Math.floor(upgrade.cost * 1.3);
-                updateUpgrades();
-                updateUI();
-            }
-        }
+        setInterval(autoGenerate, 1000);
+        updateUI();
+              }
         
         setInterval(autoGenerate, 1000);
         updateUI();
