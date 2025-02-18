@@ -95,19 +95,19 @@
         let prestigeRequirement = 1000000;
         
         let upgrades = [
-            { name: "Watering System", cost: 50, auto: 1, count: 0 },
-            { name: "Advanced Fertilizer", cost: 200, auto: 2, count: 0 },
-            { name: "Greenhouse", cost: 500, auto: 5, count: 0 },
-            { name: "Automated Irrigation", cost: 1000, auto: 7, count: 0 },
-            { name: "Solar Grow Lights", cost: 2000, auto: 15, count: 0 },
-            { name: "AI Farming Drones", cost: 10000, auto: 30, count: 0 },
-            { name: "Nano Growth Tech", cost: 50000, auto: 80, count: 0 },
-            { name: "Robotic Harvesters", cost: 100000, auto: 100, count: 0 },
-            { name: "Quantum Soil", cost: 250000, auto: 150, count: 0 },
-            { name: "Bioengineered Pineapples", cost: 500000, auto: 300, count: 0 },
-            { name: "Hydroponic Farms", cost: 750000, auto: 500, count: 0 },
-            { name: "Interstellar Pineapple Colonies", cost: 2000000, auto: 1000, count: 0 },
-            { name: "Time-Warped Pineapple Fields", cost: 5000000, auto: 5000, count: 0 }
+            { name: "Watering System", cost: 50, baseCost: 50, auto: 1, count: 0 },
+            { name: "Advanced Fertilizer", cost: 200, baseCost: 200, auto: 2, count: 0 },
+            { name: "Greenhouse", cost: 500, baseCost: 500, auto: 5, count: 0 },
+            { name: "Automated Irrigation", cost: 1000, baseCost: 1000, auto: 7, count: 0 },
+            { name: "Solar Grow Lights", cost: 2000, baseCost: 2000, auto: 15, count: 0 },
+            { name: "AI Farming Drones", cost: 10000, baseCost: 10000, auto: 30, count: 0 },
+            { name: "Nano Growth Tech", cost: 50000, baseCost: 50000, auto: 80, count: 0 },
+            { name: "Robotic Harvesters", cost: 100000, baseCost: 100000, auto: 100, count: 0 },
+            { name: "Quantum Soil", cost: 250000, baseCost: 250000, auto: 150, count: 0 },
+            { name: "Bioengineered Pineapples", cost: 500000, baseCost: 500000, auto: 300, count: 0 },
+            { name: "Hydroponic Farms", cost: 750000, baseCost: 750000, auto: 500, count: 0 },
+            { name: "Interstellar Pineapple Colonies", cost: 2000000, baseCost: 2000000, auto: 1000, count: 0 },
+            { name: "Time-Warped Pineapple Fields", cost: 5000000, baseCost: 5000000, auto: 5000, count: 0 }
         ];
         
         function clickPineapple() {
@@ -121,6 +121,12 @@
                 autoClickers = 0;
                 prestigeBonus *= 2;
                 prestigeRequirement *= 2;
+                
+                upgrades.forEach(upgrade => {
+                    upgrade.cost = upgrade.baseCost;
+                    upgrade.count = 0;
+                });
+                
                 updateUI();
                 updateUpgrades();
             } else {
@@ -169,15 +175,6 @@
         setInterval(autoGenerate, 1000);
         updateUI();
         updateUpgrades();
-        function addpineapples(amount) {
-    if (typeof amount === 'number' && amount > 0) {
-        score += amount;
-        document.getElementById('score').innerText = score;
-        console.log(`Cheat activated: Added ${amount} pineapples! 🍍`);
-    } else {
-        console.log("Invalid amount. Use a positive number.");
-    }
-}
     </script>
 </body>
 </html>
