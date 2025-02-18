@@ -1,143 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css"> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pineapple Clicker</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #2c2f33;
             color: white;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-        #game-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 800px;
-            padding: 10px;
-        }
-        #click-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             text-align: center;
-            margin-bottom: 20px;
         }
         #pineapple {
-            width: 70%;
-            max-width: 350px;
+            width: 250px;
             cursor: pointer;
+            transition: transform 0.1s;
         }
-        #sidebar {
-            background: #23272a;
-            padding: 10px;
-            overflow-y: auto;
-            margin-top: 20px;
-            width: 100%;
-        }
-        h1, h2, h3 {
-            font-size: 1.5em;
+        #pineapple:active {
+            transform: scale(1.1);
         }
         .button {
-            width: 100%;
-            padding: 12px;
-            margin: 6px 0;
             background: #7289da;
+            padding: 10px;
             border: none;
-            cursor: pointer;
-            font-size: 14px;
             color: white;
-            font-weight: bold;
-            border-radius: 5px;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-align: left;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
         }
-        .button:hover {
-            transform: scale(1.05);
-            background: #677bc4;
-        }
-        .button:active {
-            transform: scale(0.95);
-        }
-        /* Mobile responsiveness */
-        @media (max-width: 600px) {
-            h1, h2, h3 {
-                font-size: 1.2em;
-            }
-            #pineapple {
-                width: 80%;
-                max-width: 300px;
-            }
-            .button {
-                font-size: 12px;
-                padding: 10px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            #pineapple {
-                width: 90%;
-                max-width: 250px;
-            }
-            .button {
-                font-size: 10px;
-                padding: 8px;
-            }
+        .golden {
+            color: gold;
         }
     </style>
 </head>
 <body>
-    <div id="game-container">
-        <div id="click-area">
-            <h1>Pineapple Clicker 🍍</h1>
-            <h2>Pineapples: <span id="score">0</span></h2>
-            <img id="pineapple" src="vecteezy_pineapple-fruit-cartoon-illustration-isolated-on-transparent_47130664.png" onclick="clickPineapple()">
-        </div>
-        <div id="sidebar">
-            <h3>Upgrades</h3>
-            <div id="upgrades"></div>
-        </div>
+    <h1>Pineapple Clicker 🍍</h1>
+    <h2>Pineapples: <span id="score">0</span></h2>
+    <h3>Prestige Bonus: x<span id="prestige">1</span></h3>
+    <img id="pineapple" src="pineapple.png" onclick="clickPineapple()">
+    <div>
+        <h3>Upgrades</h3>
+        <div id="upgrades"></div>
+        <button class="button" onclick="prestige()">Prestige Reset (Gain Bonus)</button>
     </div>
+    <div id="notification" style="display:none; color: yellow; font-size: 20px; margin-top: 10px;">Congrats on 1M!</div>
     
     <script>
-        let score = 0;
-        let perClick = 1;
-        let autoClickers = 0;
+        let score = parseInt(localStorage.getItem("score")) || 0;
+        let perClick = parseInt(localStorage.getItem("perClick")) || 1;
+        let autoClickers = parseInt(localStorage.getItem("autoClickers")) || 0;
+        let prestigeBonus = parseInt(localStorage.getItem("prestigeBonus")) || 1;
+        
         let upgrades = [
-            { name: "Better Soil", cost: 10, boost: 1, auto: 0, count: 0 },
-            { name: "Watering System", cost: 50, boost: 2, auto: 1, count: 0 },
-            { name: "Fertilizer", cost: 100, boost: 5, auto: 2, count: 0 },
-            { name: "Greenhouse", cost: 500, boost: 10, auto: 5, count: 0 },
-            { name: "Automated Farm", cost: 1000, boost: 20, auto: 10, count: 0 },
-            { name: "Tractor", cost: 5000, boost: 50, auto: 25, count: 0 },
-            { name: "Irrigation System", cost: 10000, boost: 100, auto: 50, count: 0 },
-            { name: "Solar Farm", cost: 50000, boost: 250, auto: 100, count: 0 },
-            { name: "Robotic Harvesters", cost: 100000, boost: 500, auto: 250, count: 0 },
-            { name: "AI Farming", cost: 500000, boost: 1000, auto: 500, count: 0 },
-            { name: "Super Fertilizer", cost: 1000000, boost: 2000, auto: 1000, count: 0 },
-            { name: "Pineapple Drone", cost: 5000000, boost: 5000, auto: 2500, count: 0 },
-            { name: "Mega Greenhouse", cost: 20000000, boost: 10000, auto: 5000, count: 0 },
-            { name: "Hydroponic Farm", cost: 100000000, boost: 25000, auto: 10000, count: 0 },
-            { name: "Space Farming", cost: 500000000, boost: 50000, auto: 25000, count: 0 },
-            { name: "Quantum Pineapple Growth", cost: 1000000000, boost: 100000, auto: 50000, count: 0 },
-            { name: "Pineapple Multiverse", cost: 5000000000, boost: 250000, auto: 100000, count: 0 },
-            { name: "Infinite Pineapple Generator", cost: 10000000000, boost: 500000, auto: 250000, count: 0 },
-            { name: "Godly Pineapple", cost: 50000000000, boost: 1000000, auto: 500000, count: 0 }
+            { name: "Watering System", cost: 50, boost: 2, auto: 1 },
+            { name: "Greenhouse", cost: 500, boost: 5, auto: 5 },
+            { name: "Robotic Harvesters", cost: 100000, boost: 50, auto: 100 },
+            { name: "Advanced Fertilizer", cost: 200, boost: 3, auto: 2 },
+            { name: "Automated Irrigation", cost: 1000, boost: 6, auto: 7 },
+            { name: "Solar Grow Lights", cost: 2000, boost: 10, auto: 15 },
+            { name: "AI Farming Drones", cost: 10000, boost: 20, auto: 30 },
+            { name: "Nano Growth Tech", cost: 50000, boost: 50, auto: 80 },
+            { name: "Quantum Soil", cost: 250000, boost: 100, auto: 150 },
+            { name: "Bioengineered Pineapples", cost: 500000, boost: 250, auto: 300 },
+            { name: "Hydroponic Farms", cost: 750000, boost: 500, auto: 500 },
+            { name: "Interstellar Pineapple Colonies", cost: 2000000, boost: 1000, auto: 1000 },
+            { name: "Time-Warped Pineapple Fields", cost: 5000000, boost: 5000, auto: 5000 }
         ];
         
         function clickPineapple() {
-            score += perClick;
-            document.getElementById('score').innerText = formatNumber(score);
+            let bonus = Math.random() < 0.05 ? 5 : 1; // 5% chance for a golden click
+            score += perClick * prestigeBonus * bonus;
+            updateUI();
         }
         
         function buyUpgrade(index) {
@@ -146,9 +80,7 @@
                 score -= upgrade.cost;
                 perClick += upgrade.boost;
                 autoClickers += upgrade.auto;
-                upgrade.count++;
-                upgrade.cost = Math.floor(upgrade.cost * 1.5);
-                document.getElementById('score').innerText = formatNumber(score);
+                upgrade.cost = Math.floor(upgrade.cost * 1.3);
                 updateUpgrades();
             }
         }
@@ -157,29 +89,44 @@
             let upgradeDiv = document.getElementById('upgrades');
             upgradeDiv.innerHTML = "";
             upgrades.forEach((upgrade, index) => {
-                let button = document.createElement('button');
-                button.className = "button";
-                button.innerHTML = `${upgrade.name} (Cost: ${formatNumber(upgrade.cost)}, Boost: +${upgrade.boost}, Auto: +${upgrade.auto}/s)<br><span>Owned: ${upgrade.count}</span>`;
-                button.onclick = () => buyUpgrade(index);
-                upgradeDiv.appendChild(button);
+                let btn = document.createElement('button');
+                btn.className = "button";
+                btn.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost})`;
+                btn.onclick = () => buyUpgrade(index);
+                upgradeDiv.appendChild(btn);
             });
         }
         
-        function formatNumber(num) {
-            return num.toLocaleString('fullwide', { useGrouping: false });
+        function prestige() {
+            if (score >= 1000000) { // Prestige unlocks at 1,000,000 pineapples
+                prestigeBonus++;
+                score = 0;
+                perClick = 1;
+                autoClickers = 0;
+                updateUI();
+            }
         }
         
         function autoGenerate() {
-            score += autoClickers;
-            document.getElementById('score').innerText = formatNumber(score);
+            score += autoClickers * prestigeBonus;
+            updateUI();
         }
         
-        function add_pineapples(amount) {
-            score += amount;
-            document.getElementById('score').innerText = formatNumber(score);
+        function updateUI() {
+            document.getElementById('score').innerText = score;
+            document.getElementById('prestige').innerText = prestigeBonus;
+            localStorage.setItem("score", score);
+            localStorage.setItem("perClick", perClick);
+            localStorage.setItem("autoClickers", autoClickers);
+            localStorage.setItem("prestigeBonus", prestigeBonus);
+            
+            if (score >= 1000000) {
+                document.getElementById('notification').style.display = 'block';
+            }
         }
         
         setInterval(autoGenerate, 1000);
+        updateUI();
         updateUpgrades();
     </script>
 </body>
