@@ -39,12 +39,12 @@
         }
         .button {
             width: 100%;
-            padding: 10px;
-            margin: 5px 0;
+            padding: 6px;
+            margin: 3px 0;
             background: #7289da;
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 12px;
             color: white;
             font-weight: bold;
             border-radius: 5px;
@@ -83,7 +83,21 @@
             { name: "Watering System", cost: 50, boost: 2, auto: 1, count: 0 },
             { name: "Fertilizer", cost: 100, boost: 5, auto: 2, count: 0 },
             { name: "Greenhouse", cost: 500, boost: 10, auto: 5, count: 0 },
-            { name: "Automated Farm", cost: 1000, boost: 20, auto: 10, count: 0 }
+            { name: "Automated Farm", cost: 1000, boost: 20, auto: 10, count: 0 },
+            { name: "Tractor", cost: 5000, boost: 50, auto: 25, count: 0 },
+            { name: "Irrigation System", cost: 10000, boost: 100, auto: 50, count: 0 },
+            { name: "Solar Farm", cost: 50000, boost: 250, auto: 100, count: 0 },
+            { name: "Robotic Harvesters", cost: 100000, boost: 500, auto: 250, count: 0 },
+            { name: "AI Farming", cost: 500000, boost: 1000, auto: 500, count: 0 },
+            { name: "Super Fertilizer", cost: 1000000, boost: 2000, auto: 1000, count: 0 },
+            { name: "Pineapple Drone", cost: 5000000, boost: 5000, auto: 2500, count: 0 },
+            { name: "Mega Greenhouse", cost: 20000000, boost: 10000, auto: 5000, count: 0 },
+            { name: "Hydroponic Farm", cost: 100000000, boost: 25000, auto: 10000, count: 0 },
+            { name: "Space Farming", cost: 500000000, boost: 50000, auto: 25000, count: 0 },
+            { name: "Quantum Pineapple Growth", cost: 1000000000, boost: 100000, auto: 50000, count: 0 },
+            { name: "Pineapple Multiverse", cost: 5000000000, boost: 250000, auto: 100000, count: 0 },
+            { name: "Infinite Pineapple Generator", cost: 10000000000, boost: 500000, auto: 250000, count: 0 },
+            { name: "Godly Pineapple", cost: 50000000000, boost: 1000000, auto: 500000, count: 0 }
         ];
         
         function clickPineapple() {
@@ -110,7 +124,7 @@
             upgrades.forEach((upgrade, index) => {
                 let button = document.createElement('button');
                 button.className = "button";
-                button.innerHTML = `${upgrade.name} (Cost: ${upgrade.cost}, Boost: +${upgrade.boost}, Auto: +${upgrade.auto}/s)<br><span>Owned: ${upgrade.count}</span>`;
+                button.innerHTML = `${upgrade.name} (Cost: ${formatNumber(upgrade.cost)}, Boost: +${upgrade.boost}, Auto: +${upgrade.auto}/s)<br><span>Owned: ${upgrade.count}</span>`;
                 button.onclick = () => buyUpgrade(index);
                 upgradeDiv.appendChild(button);
             });
